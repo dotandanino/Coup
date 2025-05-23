@@ -13,7 +13,7 @@ namespace coup{
       bool underSanction;//boolean var to say if this player is under sanction
       string lastAction;//string to save his last action for the undo method
       bool payForBribe;//to indicate if this player paid for 2 turns
-      bool isDeath;//to know if we need to skip on him
+      bool isAlive;//to know if we need to skip on him
       bool canArrest; //check if the player can arrest another player
 
     public:
@@ -28,9 +28,12 @@ namespace coup{
         virtual bool getArrestedBy(Player& pl);//this function is to get arrested by another player
         virtual string getName() const;//return the name of the player
         virtual string getRole() const =0;//return the role of the player this function is also to make sure the class will be absrtact
-        void undoBribe();//undo the bribe in case judge undo the action
         string getLastAction() const;//return the last action of the player
+        void undoBribe();//undo the bribe in case judge undo the action
         void setCanArrest(bool b);//set the player to be able to arrest another player
+        void sanction(Player& pl);//put the player under sanction cost:3
+        bool isUnderSanction() const;//return if the player is under sanction
+        bool isStillAlive() const;//return if the player is alive
       };
 }
 #endif

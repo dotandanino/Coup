@@ -59,13 +59,15 @@ int main() {
     // } catch (const std::exception &e) {
     //     std::cerr << e.what() << '\n';
     // }
-    // cout << governor.coins() << endl; // Expected: 2
-    // cout << spy.coins() << endl; // Expected: 3
+    cout << governor.coins() << endl; // Expected: 2
+    cout << spy.coins() << endl; // Expected: 3
 
     // governor.undo(spy); // Governor undo tax
+    game_1.nextTurn();
     // cout << spy.coins() << endl; // Expected: 1
 
     // baron.invest(); // Baron traded its 3 coins and got 6 
+    game_1.nextTurn();
     // general.gather();
     // judge.gather(); 
 
