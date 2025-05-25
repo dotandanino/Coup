@@ -8,7 +8,7 @@ General::General(Game& g,std::string name):Player(g,name){
 string General::getRole() const{
     return "General";
 }
-bool General::getArrestedBy(Player& pl){
+bool General::getArrested(){
     this->game.setLastArrested(this->getName());
     return false;
 }

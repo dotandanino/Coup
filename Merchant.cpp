@@ -8,7 +8,7 @@ Merchant::Merchant(Game& g,string name):Player(g,name){
 string Merchant::getRole() const{
     return "Merchant";
 }
-bool Merchant::getArrestedBy(Player& pl){
+bool Merchant::getArrested(){
     if(this->money<2){
             throw std::invalid_argument("you dont have enough money to pay for the arrest");
     }

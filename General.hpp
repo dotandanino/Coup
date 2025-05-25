@@ -11,7 +11,7 @@ namespace coup{
         public:
             General(Game& g,std::string name);
             string getRole() const override;
-            bool getArrestedBy(Player& pl) override;
+            bool getArrested() override;
     };
 }
 #endif

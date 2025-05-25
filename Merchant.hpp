@@ -13,7 +13,7 @@ namespace coup{
         public:
             Merchant(Game& g,string name);
             string getRole() const override;
-            bool getArrestedBy(Player& pl) override;
+            bool getArrested() override;
     };
 }
 #endif

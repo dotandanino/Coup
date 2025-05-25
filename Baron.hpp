@@ -13,6 +13,7 @@ namespace coup{
             Baron(Game& g,std::string name);
             string getRole() const override;
             void invest();
+            void youAreUnderSanction() override;
     };
 }
 #endif

@@ -10,7 +10,7 @@ namespace coup{
     @param name - the name of the player
     
     */
-    Player::Player(Game& g,string name):game(g),name(name){
+    Player::Player(Game& g,string name):name(name),game(g){
         vector<string> names=g.players();
         if(names.size()>=6){
             throw std::runtime_error("you cant add more players to the game");
@@ -42,14 +42,14 @@ namespace coup{
      * @throw std::invalid_argument if the player have 10 coins or more
      */
     void Player::gather(){
-        if(this->money>=10){
-            throw std::invalid_argument("you have to coup because you have 10 coins or more");
-        }
         if(!(game.myTurn(this))){
             throw std::invalid_argument("its not your turn");
         }
         if(underSanction){
             throw std::invalid_argument("you are under sanction");
+        }
+        if(this->money>=10){
+            throw std::invalid_argument("you have to coup because you have 10 coins or more");
         }
         money+=1;
         if (this->payForBribe){
@@ -65,8 +65,7 @@ namespace coup{
         this->lastAction="gather";
     }
     /**
-     * @brief this function is to get the role of the player
-     * @return the role of the player
+     * @brief this function is to get 2 coins from the bank
      * @throw std::invalid_argument if this is not his turn
      * @throw std::invalid_argument if the player is under sanction
      * @throw std::invalid_argument if the player have 10 coins or more
@@ -116,6 +115,7 @@ namespace coup{
         else{
             game.nextTurn();
         }
+        this->money-=7;
         underSanction=false;
         canArrest=true;
         this->lastAction="coup";
@@ -137,11 +137,11 @@ namespace coup{
         if(!(game.myTurn(this))){
             throw std::invalid_argument("its not your turn");
         }
-        if(this->money>=10){
-            throw std::invalid_argument("you have to coup because you have 10 coins or more");
-        }
         if(this->money<4){
             throw std::invalid_argument("you dont have enough money to pay for the bribe");
+        }
+        if(this->money>=10){
+            throw std::invalid_argument("you have to coup because you have 10 coins or more");
         }
         this->money-=4;
         this->payForBribe=true;
@@ -159,17 +159,17 @@ namespace coup{
         if(!(game.myTurn(this))){
             throw std::invalid_argument("its not your turn");
         }
-        if(this->money>=10){
-            throw std::invalid_argument("you have to coup because you have 10 coins or more");
-        }
         if(game.getLastArrested()==pl.getName()){
             throw std::invalid_argument("you cant arrest the same player twice in a row");
         }
         if(!this->canArrest){
             throw std::invalid_argument("you cant arrest this turn");
         }
-        if(pl.getArrestedBy(*this)){
+        if(pl.getArrested()){
             this->money+=1;
+        }
+        if(this->money>=10){
+            throw std::invalid_argument("you have to coup because you have 10 coins or more");
         }
         if (this->payForBribe){
             this->payForBribe=false;
@@ -186,7 +186,7 @@ namespace coup{
      * @param pl - the player that arrest you
      * @throw std::invalid_argument if arrested player dont have enough money
      */
-    bool Player::getArrestedBy(Player& pl){
+    bool Player::getArrested(){
         if(this->money<1){
             throw std::invalid_argument("you dont have enough money to pay for the arrest");
         }
@@ -245,7 +245,8 @@ namespace coup{
         if(this->money>=10){
             throw std::invalid_argument("you have to coup because you have 10 coins or more");
         }
-        pl.underSanction=true;
+        pl.youAreUnderSanction();
+        this->money-=3;
         if (this->payForBribe){
             this->payForBribe=false;
         }
@@ -275,5 +276,7 @@ namespace coup{
     bool Player::isStillAlive() const{
         return(this->isAlive);
     }
-
+    void Player::youAreUnderSanction(){
+        this->underSanction=true;
+    }
 }
