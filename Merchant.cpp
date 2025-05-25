@@ -16,3 +16,11 @@ bool Merchant::getArrested(){
     this->game.setLastArrested(this->getName());
     return false;
 }
+void Merchant::yourTurn(){
+    if(!this->isAlive){
+        throw std::invalid_argument("you are not alive");
+    }
+    if(this->money>=3){
+        this->money++;
+    }
+}

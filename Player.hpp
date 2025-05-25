@@ -35,6 +35,7 @@ namespace coup{
         void sanction(Player& pl);//put the player under sanction cost:3
         bool isUnderSanction() const;//return if the player is under sanction
         bool isStillAlive() const;//return if the player is alive
+        virtual void yourTurn();// Ensure the player is alive before taking an action
         friend class Governor; // Allow Governor to access private members
     };
 }

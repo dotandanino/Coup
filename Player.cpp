@@ -279,4 +279,10 @@ namespace coup{
     void Player::youAreUnderSanction(){
         this->underSanction=true;
     }
+    /**
+     * @brief this function is to announce that its the player's turn i need this only for the Merchant
+     */
+    void Player::yourTurn(){
+        //nothing to do here//;
+    }
 }

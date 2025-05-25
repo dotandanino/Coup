@@ -40,11 +40,8 @@ void Game::nextTurn(){
     do{
         currentTurn+=1;
         currentTurn%=playersList.size();
-        counter++;
     }while(!playersList[currentTurn]->isStillAlive());
-    if(counter==playersList.size()){
-        throw std::runtime_error("You are the only player left in the game");
-    }
+    playersList[currentTurn]->yourTurn();
 }
 /**
  * @brief add player to the game

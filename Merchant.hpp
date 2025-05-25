@@ -14,6 +14,7 @@ namespace coup{
             Merchant(Game& g,string name);
             string getRole() const override;
             bool getArrested() override;
+            void yourTurn() override;
     };
 }
 #endif
