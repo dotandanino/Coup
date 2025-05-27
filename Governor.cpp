@@ -1,3 +1,4 @@
+//dotandanino@gmail.com
 #include "Governor.hpp"
 #include "Game.hpp"
 //using namespace coup;
@@ -47,5 +48,17 @@ namespace coup{
         p.money -= 2; // Undo the tax action by removing 3 coins
         p.lastAction = ""; // Clear the last action to avoid another undo
         this->lastAction="undo";
+        game.setLastAction("undo");
+    }
+    vector<string> Governor::getAvailableActions() const {
+        vector<string> actions;
+        actions.push_back("gather");
+        actions.push_back("tax");
+        actions.push_back("sanction");
+        actions.push_back("arrest");
+        actions.push_back("bribe");
+        actions.push_back("coup");
+        actions.push_back("undo"); // Governor can undo the tax action
+        return actions;
     }
 }

@@ -1,5 +1,12 @@
+//dotandanino@gmail.com
 #include "Player.hpp"
 #include "Game.hpp"
+#include "Governor.hpp"
+#include "Spy.hpp"
+#include "Baron.hpp"
+#include "General.hpp"
+#include "Judge.hpp"
+#include "Merchant.hpp"
 namespace coup{
     //in alll the functions we check if the player paid for the bribe and
     // if so we just cancel the bribe and not change the turn
@@ -63,6 +70,7 @@ namespace coup{
         underSanction=false;
         canArrest=true;
         this->lastAction="gather";
+        game.setLastAction("gather");
     }
     /**
      * @brief this function is to get 2 coins from the bank
@@ -91,6 +99,7 @@ namespace coup{
         underSanction=false;
         canArrest=true;
         this->lastAction="tax";
+        game.setLastAction("tax");
     }
     /**
      * @brief this function is to coup another player
@@ -109,17 +118,18 @@ namespace coup{
         if(!(pl.isAlive)){
             throw std::invalid_argument("you cant coup someone that already couped");
         }
+        this->money-=7;
+        underSanction=false;
+        canArrest=true;
+        this->lastAction="coup";
+        game.setLastAction("coup");
+        pl.isAlive=false;
         if (this->payForBribe){
             this->payForBribe=false;
         }
         else{
             game.nextTurn();
         }
-        this->money-=7;
-        underSanction=false;
-        canArrest=true;
-        this->lastAction="coup";
-        pl.isAlive=false;
     }
     /**
      * @brief this function is to get the amount of money the player have
@@ -143,6 +153,7 @@ namespace coup{
         if(this->money>=10){
             throw std::invalid_argument("you have to coup because you have 10 coins or more");
         }
+        game.setLastAction("bribe");
         this->money-=4;
         this->payForBribe=true;
         this->lastAction="bribe";
@@ -180,6 +191,7 @@ namespace coup{
         underSanction=false;
         canArrest=true;
         this->lastAction="arrest";
+        game.setLastAction("arrest");
     }
     /**
      * @brief this function is to get arrested by another player the main reason for this function is for thw special case of the Merchant and the General
@@ -245,6 +257,9 @@ namespace coup{
         if(this->money>=10){
             throw std::invalid_argument("you have to coup because you have 10 coins or more");
         }
+        if(pl.getRole()=="Judge"){
+            this->money-=1;
+        }
         pl.youAreUnderSanction();
         this->money-=3;
         if (this->payForBribe){
@@ -258,6 +273,7 @@ namespace coup{
         underSanction=false;
         canArrest=true;
         this->lastAction="sanction";
+        game.setLastAction("sanction");
     }
     
     /**

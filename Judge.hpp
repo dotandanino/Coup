@@ -1,3 +1,4 @@
+//dotandanino@gmail.com
 #ifndef JUDGE_HPP
 #define JUDGE_HPP
 
@@ -14,6 +15,7 @@ namespace coup{
             Judge(Game& g,string name);
             string getRole() const override;
             void undo(Player& player);
+            vector<string> getAvailableActions() const override;
     };
 }
 

@@ -1,3 +1,4 @@
+//dotandanino@gmail.com
 #include "Merchant.hpp"
 #include "Game.hpp"
 using namespace coup;
@@ -23,4 +24,14 @@ void Merchant::yourTurn(){
     if(this->money>=3){
         this->money++;
     }
+}
+vector<string> Merchant::getAvailableActions() const {
+    vector<string> actions;
+    actions.push_back("gather");
+    actions.push_back("tax");
+    actions.push_back("sanction");
+    actions.push_back("arrest");
+    actions.push_back("bribe");
+    actions.push_back("coup");
+    return actions;
 }

@@ -1,3 +1,5 @@
+//dotandanino@gmail.com
+
 #include "Game.hpp"
 #include "Player.hpp"
 using namespace coup;
@@ -8,6 +10,7 @@ using std::string;
 Game::Game(){
     this->currentTurn=0;
     this->lastArrested="";
+    this->lastGameAction="";
 }
 
 /**
@@ -36,7 +39,6 @@ string Game::turn(){
  * @brief move to the next player that is still alive
  */
 void Game::nextTurn(){
-    int counter=0;
     do{
         currentTurn+=1;
         currentTurn%=playersList.size();
@@ -104,4 +106,20 @@ void Game::setLastArrested(string name){
  */
 string Game::getLastArrested() const{
     return this->lastArrested;
+}
+
+Player* Game::getCurrentPlayer(){
+    return playersList[currentTurn];
+}
+
+vector<Player*>& Game::getPlayersList() {
+    return playersList;
+}
+
+string Game::getLastAction() const{
+    return this->lastGameAction;
+}
+
+void Game::setLastAction(string str){
+    this->lastGameAction=str;
 }

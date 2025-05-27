@@ -1,3 +1,4 @@
+//dotandanino@gmail.com
 #ifndef MERCHANT_HPP
 #define MERCHANT_HPP
 
@@ -15,6 +16,7 @@ namespace coup{
             string getRole() const override;
             bool getArrested() override;
             void yourTurn() override;
+            vector<string> getAvailableActions() const override;
     };
 }
 #endif

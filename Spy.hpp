@@ -1,3 +1,4 @@
+//dotandanino@gmail.com
 #ifndef SPY_HPP
 #define SPY_HPP
 
@@ -14,6 +15,7 @@ namespace coup{
             string getRole() const override;
             void BlockArresting(Player& pl);
             int peek(Player& pl);
+            vector<string> getAvailableActions() const override;
     };
 }
 #endif

@@ -1,3 +1,4 @@
+//dotandanino@gmail.com
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 #include "Game.hpp"
@@ -6,6 +7,7 @@
 using namespace std;
 namespace coup{
     class Governor;
+    class General;
     class Player{
     protected:
         string name;//the name of the player
@@ -36,7 +38,12 @@ namespace coup{
         bool isUnderSanction() const;//return if the player is under sanction
         bool isStillAlive() const;//return if the player is alive
         virtual void yourTurn();// Ensure the player is alive before taking an action
+        virtual ~Player() = default;// Virtual destructor for the class because it has virtual functions
+        Player& operator= (const Player& other)=delete; // Disable copy assignment operator
+        Player(const Player& other) = delete; // Disable copy constructor
+        virtual vector<string> getAvailableActions() const=0; // Get possible actions for the player
         friend class Governor; // Allow Governor to access private members
+        friend class General;
     };
 }
 #endif

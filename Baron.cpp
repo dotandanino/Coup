@@ -1,6 +1,9 @@
+//dotandanino@gmail.com
 #include "Baron.hpp"
 #include "Game.hpp"
 using namespace coup;
+using std::vector;
+using std::string;
 Baron::Baron(Game& g,std::string name):Player(g,name){
     g.addPlayer(this);
 }
@@ -27,8 +30,20 @@ void Baron::invest(){
     underSanction=false;
     canArrest=true;
     this->lastAction="invest";
+    game.setLastAction("invest");
 }
 void Baron::youAreUnderSanction() {
     this->underSanction = true;
     this->money+=1;
+}
+vector<string> Baron::getAvailableActions() const {
+    vector<string> actions;
+    actions.push_back("gather");
+    actions.push_back("tax");
+    actions.push_back("sanction");
+    actions.push_back("arrest");
+    actions.push_back("bribe");
+    actions.push_back("coup");
+    actions.push_back("invest"); // Baron can invest
+    return actions;
 }

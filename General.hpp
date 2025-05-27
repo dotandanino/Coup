@@ -1,3 +1,4 @@
+//dotandanino@gmail.com
 #ifndef GENERAL_HPP
 #define GENERAL_HPP
 
@@ -12,6 +13,8 @@ namespace coup{
             General(Game& g,std::string name);
             string getRole() const override;
             bool getArrested() override;
+            vector<string> getAvailableActions() const override;
+            void undo(Player& p);
     };
 }
 #endif

@@ -1,3 +1,4 @@
+//dotandanino@gmail.com
 #include "Judge.hpp"
 #include "Game.hpp"
 using namespace coup;
@@ -27,3 +28,14 @@ void Judge::undo(Player& player){
     }
     player.undoBribe();
 }
+vector<string> Judge::getAvailableActions() const {
+        vector<string> actions;
+        actions.push_back("gather");
+        actions.push_back("tax");
+        actions.push_back("sanction");
+        actions.push_back("arrest");
+        actions.push_back("bribe");
+        actions.push_back("coup");
+        actions.push_back("undo"); // Governor can undo the tax action
+        return actions;
+    }

@@ -1,3 +1,4 @@
+//dotandanino@gmail.com
 #ifndef GOVERNOR_HPP
 #define GOVERNOR_HPP
 #include "Player.hpp"
@@ -15,6 +16,7 @@ namespace coup{
             string getRole() const override;
             virtual void tax() override;
             void undo(Player& player);
+            vector<string> getAvailableActions() const override;
     };
 }
 
