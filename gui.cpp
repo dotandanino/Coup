@@ -57,38 +57,37 @@ void showWelcomeScreen(sf::Font& font) {
  * @return The number of players chosen (between 2 and 6).
  */
 int choose_player_screen(sf::Font& font){
-    sf::RenderWindow window(sf::VideoMode(600, 300), "Coup - Number of Players");
-
+    sf::RenderWindow window(sf::VideoMode(512, 512), "Coup - Number of Players");
+    sf::Texture imageTexture;
+    if (!imageTexture.loadFromFile("playersNumber.jpg")) {
+        std::cerr << "Failed to load image coup_picture.png" << std::endl;
+    }
+    sf::Sprite imageSprite(imageTexture);
+    imageSprite.setPosition(0, 0);
    
 
-    sf::Text title("Enter number of players (2-6):", font, 24);
-    title.setPosition(50, 50);
-    title.setFillColor(sf::Color::White);
+    sf::RectangleShape button2(sf::Vector2f(60, 60));
+    button2.setPosition(60, 350);
+    button2.setFillColor(sf::Color(0,0,0,0));
 
-    sf::RectangleShape inputBox(sf::Vector2f(200, 40));
-    inputBox.setPosition(50, 100);
-    inputBox.setFillColor(sf::Color(50, 50, 50));
-    inputBox.setOutlineThickness(2);
-    inputBox.setOutlineColor(sf::Color::White);
+    sf::RectangleShape button3(sf::Vector2f(60, 60));
+    button3.setPosition(140, 350);
+    button3.setFillColor(sf::Color(0,0,0,0));
 
-    sf::Text inputText("", font, 22);
-    inputText.setPosition(60, 105);
-    inputText.setFillColor(sf::Color::White);
+    sf::RectangleShape button4(sf::Vector2f(60, 60));
+    button4.setPosition(220, 350);
+    button4.setFillColor(sf::Color(0,0,0,0));
 
-    sf::RectangleShape button(sf::Vector2f(120, 40));
-    button.setPosition(50, 160);
-    button.setFillColor(sf::Color(100, 100, 250));
+    sf::RectangleShape button5(sf::Vector2f(60, 60));
+    button5.setPosition(300, 350);
+    button5.setFillColor(sf::Color(0,0,0,0));
 
-    sf::Text buttonText("Start", font, 22);
-    buttonText.setPosition(85, 167);
-    buttonText.setFillColor(sf::Color::White);
+    sf::RectangleShape button6(sf::Vector2f(60, 60));
+    button6.setPosition(380, 350);
+    button6.setFillColor(sf::Color(0,0,0,0));
 
-    sf::Text errorMessage("", font, 18);
-    errorMessage.setFillColor(sf::Color::Red);
-    errorMessage.setPosition(50, 210);
 
     std::string input;
-    bool selected = false;
 
     while (window.isOpen()) {
         sf::Event event;
@@ -96,49 +95,36 @@ int choose_player_screen(sf::Font& font){
             if (event.type == sf::Event::Closed)
                 window.close();
 
-            if (event.type == sf::Event::TextEntered && !selected) {
-                if (event.text.unicode >= '0' && event.text.unicode <= '9') {
-                    if (input.size() < 1) { // רק ספרה אחת
-                        input += static_cast<char>(event.text.unicode);
-                        inputText.setString(input);
-                        errorMessage.setString(""); // ניקוי הודעת שגיאה
-                    }
-                } else if (event.text.unicode == 8 && !input.empty()) { // Backspace
-                    input.pop_back();
-                    inputText.setString(input);
-                    errorMessage.setString("");
-                }
-            }
 
             if (event.type == sf::Event::MouseButtonPressed) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
                 sf::Vector2f mouse(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
 
-                if (button.getGlobalBounds().contains(mouse)) {
-                    if (!input.empty()) {
-                        int numPlayers = std::stoi(input);
-                        if (numPlayers >= 2 && numPlayers <= 6) {
-                            selected = true;
-                            window.close();
-                            return numPlayers;
-
-                        } else {
-                            errorMessage.setString("Invalid number! Must be between 2 and 6.");
-                        }
-                    } else {
-                        errorMessage.setString("Please enter a number.");
-                    }
+                if (button2.getGlobalBounds().contains(mouse)) {
+                    return 2;
+                }
+                if (button3.getGlobalBounds().contains(mouse)) {
+                    return 3;
+                }
+                if (button4.getGlobalBounds().contains(mouse)) {
+                    return 4;
+                }
+                if (button5.getGlobalBounds().contains(mouse)) {
+                    return 5;
+                }
+                if (button6.getGlobalBounds().contains(mouse)) {
+                    return 6;
                 }
             }
         }
 
         window.clear(sf::Color(30, 30, 30));
-        window.draw(title);
-        window.draw(inputBox);
-        window.draw(inputText);
-        window.draw(button);
-        window.draw(buttonText);
-        window.draw(errorMessage);
+        window.draw(imageSprite);
+        window.draw(button2);
+        window.draw(button3);
+        window.draw(button4);
+        window.draw(button5);
+        window.draw(button6);
         window.display();
     }
     return 0;//i will not reach this line but this is to avoid warning in the make file
@@ -152,30 +138,26 @@ int choose_player_screen(sf::Font& font){
  */
 std::vector<std::string> get_player_names_screen(sf::Font& font, int numPlayers) {
     std::vector<std::string> playerNames;
-    sf::RenderWindow window(sf::VideoMode(500, 250), "Enter Player Names");
-
-    sf::Text title("", font, 22);
-    title.setPosition(50, 50);
+    sf::RenderWindow window(sf::VideoMode(400, 400), "Enter Player Names");
+    sf::Texture imageTexture;
+    if (!imageTexture.loadFromFile("names.jpg")) {
+        std::cerr << "Failed to load image coup_picture.png" << std::endl;
+    }
+    sf::Sprite imageSprite(imageTexture);
+    imageSprite.setPosition(0, 0);
+    sf::Text title("", font, 40);
+    title.setPosition(50, 100);
     title.setFillColor(sf::Color::White);
 
-    sf::RectangleShape inputBox(sf::Vector2f(300, 40));
-    inputBox.setPosition(50, 100);
-    inputBox.setFillColor(sf::Color(50, 50, 50));
+    sf::RectangleShape inputBox(sf::Vector2f(300, 60));
+    inputBox.setPosition(50, 150);
+    inputBox.setFillColor(sf::Color(91,55,29));
     inputBox.setOutlineThickness(2);
     inputBox.setOutlineColor(sf::Color::White);
 
-    sf::Text inputText("", font, 22);
-    inputText.setPosition(60, 105);
-    inputText.setFillColor(sf::Color::White);
-
-    sf::RectangleShape button(sf::Vector2f(120, 40));
-    button.setPosition(50, 160);
-    button.setFillColor(sf::Color(100, 100, 250));
-
-    sf::Text buttonText("Continue", font, 20);
-    buttonText.setPosition(70, 167);
-    buttonText.setFillColor(sf::Color::White);
-
+    sf::Text inputText("", font, 40);
+    inputText.setPosition(60, 155);
+    inputText.setFillColor(sf::Color(181,148,107));
     std::string input;
     int currentPlayerIndex = 0;
 
@@ -195,62 +177,59 @@ std::vector<std::string> get_player_names_screen(sf::Font& font, int numPlayers)
                 }
             }
 
-            if (event.type == sf::Event::MouseButtonPressed) {
-                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-                sf::Vector2f mouse(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
-
-                if (button.getGlobalBounds().contains(mouse)) {
-                    if (!input.empty()) {
-                        bool flag=false;
-                        for(size_t i=0;i<playerNames.size();i++){
-                            if(playerNames[i]==input)
-                                flag=true;
-                        }
-                        if(!flag){
-                            playerNames.push_back(input);
-                            input.clear();
-                            inputText.setString("");
-
-                            currentPlayerIndex++;
-                            if (currentPlayerIndex >= numPlayers) {
-                                window.close();
-                            }
-                        }else{
-                            sf::RenderWindow errorWindow(sf::VideoMode(400, 150), "Error");
-
-                            sf::Text errorMsg("Name already exists. Try another.", font, 20);
-                            errorMsg.setFillColor(sf::Color::Red);
-                            errorMsg.setPosition(30, 50);
-
-                            while (errorWindow.isOpen()) {
-                                sf::Event errEvent;
-                                while (errorWindow.pollEvent(errEvent)) {
-                                    if (errEvent.type == sf::Event::Closed || errEvent.type == sf::Event::KeyPressed)
-                                        errorWindow.close();
-                                }
-
-                                errorWindow.clear(sf::Color::Black);
-                                errorWindow.draw(errorMsg);
-                                errorWindow.display();
-                            }
-                            input = ""; // reset input
-                            inputText.setString("");
-                            continue; // let user try again
-                        }
-                        
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter) {
+            
+                if (!input.empty()) {
+                    bool flag=false;
+                    for(size_t i=0;i<playerNames.size();i++){
+                        if(playerNames[i]==input)
+                            flag=true;
                     }
+                    if(!flag){
+                        playerNames.push_back(input);
+                        input.clear();
+                        inputText.setString("");
+
+                        currentPlayerIndex++;
+                        if (currentPlayerIndex >= numPlayers) {
+                            window.close();
+                        }
+                    }else{
+                        sf::RenderWindow errorWindow(sf::VideoMode(400, 150), "Error");
+
+                        sf::Text errorMsg("Name already exists. Try another.", font, 20);
+                        errorMsg.setFillColor(sf::Color::Red);
+                        errorMsg.setPosition(30, 50);
+
+                        while (errorWindow.isOpen()) {
+                            sf::Event errEvent;
+                            while (errorWindow.pollEvent(errEvent)) {
+                                if (errEvent.type == sf::Event::Closed || errEvent.type == sf::Event::KeyPressed)
+                                    errorWindow.close();
+                            }
+
+                            errorWindow.clear(sf::Color::Black);
+                            errorWindow.draw(errorMsg);
+                            errorWindow.display();
+                        }
+                        input = ""; // reset input
+                        inputText.setString("");
+                        continue; // let user try again
+                    }
+                    
                 }
+            
             }
+        
         }
 
         title.setString("Enter name for Player " + std::to_string(currentPlayerIndex + 1) + ":");
 
         window.clear(sf::Color(30, 30, 30));
+        window.draw(imageSprite);
         window.draw(title);
         window.draw(inputBox);
         window.draw(inputText);
-        window.draw(button);
-        window.draw(buttonText);
         window.display();
     }
 
@@ -275,7 +254,13 @@ void startGame(const std::vector<std::string>& playerNames,Game & game,vector<Pl
 
 
 void showPlayerTurn(Game& game) {
-    sf::RenderWindow window(sf::VideoMode(1000, 750), "Player Turn");
+    sf::RenderWindow window(sf::VideoMode(1024, 1024), "Player Turn");
+    sf::Texture imageTexture;
+    if (!imageTexture.loadFromFile("players.jpeg")) {
+        std::cerr << "Failed to load image coup_picture.png" << std::endl;
+    }
+    sf::Sprite imageSprite(imageTexture);
+    imageSprite.setPosition(0, 0);
     bool selectingTarget = false;
     std::vector<Player*> targets;
     bool showCancel=false;
@@ -287,15 +272,18 @@ void showPlayerTurn(Game& game) {
         return;
     }
 
-    sf::Text nameText("", font, 30);
-    nameText.setPosition (50, 30);
+    sf::Text nameText("", font, 40);
+    nameText.setPosition (50, 200);
+    nameText.setFillColor(sf::Color(85,51,23));
 
-    sf::Text roleText("", font, 30);
-    roleText.setPosition(50, 80);
+    sf::Text roleText("", font, 40);
+    roleText.setFillColor(sf::Color(85,51,23));
+    roleText.setPosition(50, 250);
 
-    sf::Text coinsText("", font, 30);
-    coinsText.setPosition(50, 130);
-    
+    sf::Text coinsText("", font, 40);
+    coinsText.setPosition(50, 300);
+    coinsText.setFillColor(sf::Color(85,51,23));
+
     sf::Text errorText("", font, 24);
     errorText.setFillColor(sf::Color::Red);
     //I want to display the error text in the right side to make sure the buttons will not hide it
@@ -327,19 +315,19 @@ void showPlayerTurn(Game& game) {
         buttons.clear();
         buttonTexts.clear();
 
-        float y = 200;
+        float y = 370;
         for (const std::string& action : actions) {
-            sf::RectangleShape button(sf::Vector2f(200, 40));
-            button.setFillColor(sf::Color(100, 100, 250));
-            button.setPosition(50, y);
+            sf::RectangleShape button(sf::Vector2f(300, 60));
+            button.setFillColor(sf::Color(85, 51, 23));
+            button.setPosition(362, y);
 
-            sf::Text actionText(action, font, 24);
-            actionText.setFillColor(sf::Color::White);
-            actionText.setPosition(60, y + 5);
+            sf::Text actionText(action, font, 36);
+            actionText.setFillColor(sf::Color(180,148,107));
+            actionText.setPosition(400, y + 5);
 
             buttons.push_back(button);
             buttonTexts.push_back(actionText);
-            y += 60;
+            y += 70;
         }
         
     };
@@ -348,8 +336,8 @@ void showPlayerTurn(Game& game) {
         targetButtons.clear();
         targetButtonTexts.clear();
 
-        float y = 200;
-        float x = 300;
+        float y = 370;
+        float x = 700;
 
         for (Player* p : targets) {
             sf::RectangleShape button(sf::Vector2f(200, 40));
@@ -534,6 +522,7 @@ void showPlayerTurn(Game& game) {
         }
 
         window.clear();
+        window.draw(imageSprite);
         if (selectingTarget) {
             for (size_t i = 0; i < targetButtons.size(); ++i) {
                 window.draw(targetButtons[i]);
@@ -660,17 +649,23 @@ string showCancelConfirmation(sf::RenderWindow& mainWindow, sf::Font& font, stri
 
 
 void showWinnerWindow(const std::string& winnerName) {
-    sf::RenderWindow winWindow(sf::VideoMode(600, 200), "Winner!");
-
+    sf::RenderWindow winWindow(sf::VideoMode(780, 780), "Winner!");    
+     // load the pictuures
+    sf::Texture imageTexture;
+    if (!imageTexture.loadFromFile("winner.jpeg")) {
+        std::cerr << "Failed to load image coup_picture.png" << std::endl;
+    }
+    sf::Sprite imageSprite(imageTexture);
+    imageSprite.setPosition(0, 0);
     sf::Font font;
     if (!font.loadFromFile("arial.ttf")) {
         std::cerr << "Could not load font for winner window\n";
         return;
     }
 
-    sf::Text winText("Winner: " + winnerName, font, 40);
-    winText.setFillColor(sf::Color::Green);
-    winText.setPosition(50, 80);
+    sf::Text winText(winnerName, font, 68);
+    winText.setFillColor(sf::Color(85,51,23));
+    winText.setPosition(370, 550);
 
     while (winWindow.isOpen()) {
         sf::Event event;
@@ -681,6 +676,7 @@ void showWinnerWindow(const std::string& winnerName) {
         }
 
         winWindow.clear(sf::Color::Black);
+        winWindow.draw(imageSprite);
         winWindow.draw(winText);
         winWindow.display();
     }
@@ -690,7 +686,7 @@ void showWinnerWindow(const std::string& winnerName) {
 int main() {
     
     sf::Font font;
-    if (!font.loadFromFile("arial.ttf")) {
+    if (!font.loadFromFile("AmericanCaptain-MdEY.otf")) {
         std::cerr << "Could not load font!" << std::endl;
         return 1;
     }
