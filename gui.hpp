@@ -24,5 +24,5 @@ std::vector<std::string> get_player_names_screen(sf::Font& font, int playerAmoun
 void startGame(const std::vector<std::string>& playerNames,Game & game);
 void showPlayerTurn(Game& game);
 void showWinnerWindow(const std::string& winnerName);
-
+string showCancelConfirmation(sf::RenderWindow& mainWindow, sf::Font& font, string name);
 #endif

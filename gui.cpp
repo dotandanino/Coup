@@ -9,18 +9,25 @@ using std::string;
  * @param font The font to use for the text.
  */
 void showWelcomeScreen(sf::Font& font) {
-    sf::RenderWindow welcome(sf::VideoMode(500, 250), "Welcome to Coup");
+    sf::RenderWindow welcome(sf::VideoMode(480, 720), "Welcome to Coup");
+    
+     // load the pictuures
+    sf::Texture imageTexture;
+    if (!imageTexture.loadFromFile("welcome_background.png")) {
+        std::cerr << "Failed to load image coup_picture.png" << std::endl;
+    }
+    sf::Sprite imageSprite(imageTexture);
+    imageSprite.setPosition(0, 0);
 
-    sf::Text welcomeText("Welcome to Coup Game!", font, 28);
-    welcomeText.setPosition(60, 60);
-    welcomeText.setFillColor(sf::Color::White);
+
 
     sf::RectangleShape startButton(sf::Vector2f(150, 50));
-    startButton.setPosition(175, 150);
-    startButton.setFillColor(sf::Color(100, 150, 250));
+    startButton.setPosition(165, 640);
+    startButton.setFillColor(sf::Color(171, 153, 123));
+    // startButton.setFillColor(sf::Color::White);
 
     sf::Text startText("Start", font, 24);
-    startText.setPosition(215, 160);
+    startText.setPosition(205, 665);
     startText.setFillColor(sf::Color::White);
 
     while (welcome.isOpen()) {
@@ -32,13 +39,12 @@ void showWelcomeScreen(sf::Font& font) {
             if (event.type == sf::Event::MouseButtonPressed) {
                 sf::Vector2f mouse(sf::Mouse::getPosition(welcome));
                 if (startButton.getGlobalBounds().contains(mouse)) {
-                    welcome.close();  // עובר לחלון הבא
+                    welcome.close();
                 }
             }
         }
-
         welcome.clear(sf::Color(20, 20, 20));
-        welcome.draw(welcomeText);
+        welcome.draw(imageSprite);
         welcome.draw(startButton);
         welcome.draw(startText);
         welcome.display();
@@ -113,7 +119,7 @@ int choose_player_screen(sf::Font& font){
                         int numPlayers = std::stoi(input);
                         if (numPlayers >= 2 && numPlayers <= 6) {
                             selected = true;
-                            window.close();  // להמשיך למשחק או לחלון הבא
+                            window.close();
                             return numPlayers;
 
                         } else {
@@ -135,6 +141,7 @@ int choose_player_screen(sf::Font& font){
         window.draw(errorMessage);
         window.display();
     }
+    return 0;//i will not reach this line but this is to avoid warning in the make file
 }
 
 /**
@@ -271,7 +278,7 @@ void showPlayerTurn(Game& game) {
     sf::RenderWindow window(sf::VideoMode(1000, 750), "Player Turn");
     bool selectingTarget = false;
     std::vector<Player*> targets;
-
+    bool showCancel=false;
     std::vector<sf::RectangleShape> targetButtons;
     std::vector<sf::Text> targetButtonTexts;
     sf::Font font;
@@ -288,7 +295,7 @@ void showPlayerTurn(Game& game) {
 
     sf::Text coinsText("", font, 30);
     coinsText.setPosition(50, 130);
-
+    
     sf::Text errorText("", font, 24);
     errorText.setFillColor(sf::Color::Red);
     //I want to display the error text in the right side to make sure the buttons will not hide it
@@ -304,7 +311,7 @@ void showPlayerTurn(Game& game) {
     Special.setPosition(specialX,700);
 
     sf::Clock errorClock;
-
+    string answer;
     std::vector<std::string> actions;
     std::vector<sf::RectangleShape> buttons;
     std::vector<sf::Text> buttonTexts;
@@ -362,17 +369,6 @@ void showPlayerTurn(Game& game) {
 
     
     while (window.isOpen()) {
-        try
-        {
-            string winnerName =game.winner();
-            window.close(); // the game is came to the end
-            showWinnerWindow(winnerName);  // open new window to announce who is the winner
-            return;
-        }
-        catch(const std::exception& e)
-        {
-            
-        }
         
         Player* currentPlayer = game.getCurrentPlayer();
         if (currentPlayer != lastPlayer) {
@@ -396,10 +392,46 @@ void showPlayerTurn(Game& game) {
                         try {
                             if (action == "tax") {
                                 currentPlayer->tax();
+                                selectingTarget=false;
+                                for(Player* p:game.getPlayersList()){
+                                    if(p->getRole()=="Governor" && p->isStillAlive() && p->getName()!=currentPlayer->getName()){
+                                        showCancel=true;
+                                        answer=showCancelConfirmation(window,font,p->getName());
+                                        std::cout<<answer<<std::endl;
+                                        if(answer=="yes"){
+                                            Governor* governor = dynamic_cast<Governor*>(p);
+                                            if (governor){
+                                                governor->undo(*currentPlayer);
+                                                break;
+                                            };
+                                        }
+                                        showCancel=false;
+                                    }
+                                }
                             } else if (action == "gather") {
                                 currentPlayer->gather();
+                                showCancel=false;
+                                selectingTarget=false;
                             } else if (action == "bribe") {
                                 currentPlayer->bribe();
+                                showCancel=true;
+                                selectingTarget=false;
+                                for(Player* p:game.getPlayersList()){
+                                    if(p->getRole()=="Judge" && p->isStillAlive()){
+                                        showCancel=true;
+                                        answer=showCancelConfirmation(window,font,p->getName());
+                                        std::cout<<answer<<std::endl;
+                                        if(answer=="yes"){
+                                            Judge* judge = dynamic_cast<Judge*>(p);
+                                            if (judge){
+                                                judge->undo(*currentPlayer);
+                                               
+                                                break;
+                                            }
+                                        }
+                                        showCancel=false;
+                                    }
+                                }
                             } else if (action == "arrest" || action == "coup" || action=="sanction" || action=="undo" || action=="peek" || action=="blockArresting") {
                                 selectingTarget = true;
                                 selectedAction=action;
@@ -439,6 +471,22 @@ void showPlayerTurn(Game& game) {
                                 currentPlayer->arrest(*target);
                             } else if (selectedAction == "coup") {
                                 currentPlayer->coup(*target);
+                                for(Player* p:game.getPlayersList()){
+                                    if(p->getRole()=="General" && (p->isStillAlive() || p->getName()==target->getName()) && p->coins()>=5){
+                                        showCancel=true;
+                                        answer=showCancelConfirmation(window,font,p->getName());
+                                        std::cout<<answer<<std::endl;
+                                        if(answer=="yes"){
+                                            General* general = dynamic_cast<General*>(p);
+                                            if (general){
+                                                general->undo(*target);
+                                                break;
+                                            };
+                                        }
+                                        showCancel=false;
+                                    }
+                                }
+
                             } else if (selectedAction == "sanction") {
                                 currentPlayer->sanction(*target);
                             }else if (selectedAction == "undo") {
@@ -502,8 +550,111 @@ void showPlayerTurn(Game& game) {
             window.draw(buttons[i]);
             window.draw(buttonTexts[i]);
         }
-
+        if(!showCancel){
+            try
+            {
+                string winnerName =game.winner();
+                window.close(); // the game is came to the end
+                showWinnerWindow(winnerName);  // open new window to announce who is the winner
+                return;
+            }
+            catch(const std::exception& e)
+            {
+                
+            }
+        }
         window.display();
+    }
+}
+
+string showCancelConfirmation(sf::RenderWindow& mainWindow, sf::Font& font, string name) {
+    // Create overlay background
+    sf::RectangleShape overlay(sf::Vector2f(mainWindow.getSize().x, mainWindow.getSize().y));
+    overlay.setFillColor(sf::Color(0, 0, 0, 180)); // Semi-transparent black
+
+    // Create popup background
+    sf::RectangleShape popup(sf::Vector2f(400, 200));
+    popup.setPosition(
+        (mainWindow.getSize().x - 400) / 2.0f,
+        (mainWindow.getSize().y - 200) / 2.0f
+    );
+    popup.setFillColor(sf::Color(50, 50, 50));
+    popup.setOutlineThickness(2);
+    popup.setOutlineColor(sf::Color::White);
+
+    // Setup text and buttons
+    sf::Text questionText(name + " Do you want to cancel the last action?", font, 18);
+    questionText.setFillColor(sf::Color::White);
+    questionText.setPosition(
+        popup.getPosition().x + 30,
+        popup.getPosition().y + 40
+    );
+
+    // Yes button
+    sf::RectangleShape yesButton(sf::Vector2f(100, 40));
+    yesButton.setPosition(
+        popup.getPosition().x + 60,
+        popup.getPosition().y + 120
+    );
+    yesButton.setFillColor(sf::Color(70, 200, 70));
+
+    sf::Text yesText("Yes", font, 20);
+    yesText.setFillColor(sf::Color::Black);
+    yesText.setPosition(
+        yesButton.getPosition().x + 35,
+        yesButton.getPosition().y + 5
+    );
+
+    // No button
+    sf::RectangleShape noButton(sf::Vector2f(100, 40));
+    noButton.setPosition(
+        popup.getPosition().x + 240,
+        popup.getPosition().y + 120
+    );
+    noButton.setFillColor(sf::Color(200, 70, 70));
+
+    sf::Text noText("No", font, 20);
+    noText.setFillColor(sf::Color::Black);
+    noText.setPosition(
+        noButton.getPosition().x + 35,
+        noButton.getPosition().y + 5
+    );
+
+    while (true) {
+        sf::Event event;
+        while (mainWindow.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                mainWindow.close();
+                return "no";
+            }
+
+            if (event.type == sf::Event::MouseButtonPressed) {
+                sf::Vector2i mousePos = sf::Mouse::getPosition(mainWindow);
+                
+                if (yesButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    return "yes";
+                }
+                else if (noButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    return "no";
+                }
+            }
+
+            if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::Escape) {
+                    return "no2";
+                }
+            }
+        }
+
+        // Draw confirmation dialog over the main window
+        mainWindow.draw(overlay);
+        mainWindow.draw(popup);
+        mainWindow.draw(questionText);
+        mainWindow.draw(yesButton);
+        mainWindow.draw(yesText);
+        mainWindow.draw(noButton);
+        mainWindow.draw(noText);
+        mainWindow.display();
     }
 }
 

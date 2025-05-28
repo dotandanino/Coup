@@ -155,6 +155,11 @@ namespace coup{
         }
         game.setLastAction("bribe");
         this->money-=4;
+        if(this->needSkip()){
+            this->payForBribe=false;
+            this->underSanction=false;
+            game.nextTurn();
+        }
         this->payForBribe=true;
         this->lastAction="bribe";
     }
@@ -258,6 +263,9 @@ namespace coup{
             throw std::invalid_argument("you have to coup because you have 10 coins or more");
         }
         if(pl.getRole()=="Judge"){
+            if(this->money<4){
+                throw std::invalid_argument("you dont have enough money");
+            }
             this->money-=1;
         }
         pl.youAreUnderSanction();
@@ -300,5 +308,33 @@ namespace coup{
      */
     void Player::yourTurn(){
         //nothing to do here//;
+    }
+
+    bool Player::needSkip() const{
+        if(!underSanction){
+            return false;
+        }
+        if(this->money>=3){
+            return false;
+        }
+        if(canArrest){
+            for(Player* p:game.getPlayersList()){
+                if(p->name!=this->name){
+                    if(p->canBeArrested()){
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+    /**
+     * @brief this function is to check if the player can be arrested
+     * @return true if the player can be arrested
+     * @return false if the player cant be arrested
+     * @note the player can be arrested if he has at least 1 coin and is not the last arrested player expect the Merchant that can be arrested if he has at least 2 coins
+     */
+    bool Player::canBeArrested() const{
+        return(this->money>=1 && this->name != game.getLastArrested());
     }
 }

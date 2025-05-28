@@ -24,6 +24,7 @@ namespace coup{
         virtual void youAreUnderSanction();//this function is to put the player under sanction
         virtual void gather();//take 1 coin from the bank cost: 0
         virtual void tax();//take 2 coins from the bank cost:0
+        
         virtual void coup(Player& pl);//kick out another player from the game cost:7
         virtual int coins();//print the amount of money the player have
         virtual void bribe();//pay to get exrta turn cost:4
@@ -42,6 +43,8 @@ namespace coup{
         Player& operator= (const Player& other)=delete; // Disable copy assignment operator
         Player(const Player& other) = delete; // Disable copy constructor
         virtual vector<string> getAvailableActions() const=0; // Get possible actions for the player
+        bool needSkip() const;
+        virtual bool canBeArrested() const;
         friend class Governor; // Allow Governor to access private members
         friend class General;
     };

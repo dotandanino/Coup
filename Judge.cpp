@@ -36,6 +36,5 @@ vector<string> Judge::getAvailableActions() const {
         actions.push_back("arrest");
         actions.push_back("bribe");
         actions.push_back("coup");
-        actions.push_back("undo"); // Governor can undo the tax action
         return actions;
     }

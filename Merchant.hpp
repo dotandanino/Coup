@@ -17,6 +17,7 @@ namespace coup{
             bool getArrested() override;
             void yourTurn() override;
             vector<string> getAvailableActions() const override;
+            bool canBeArrested() const override;
     };
 }
 #endif

@@ -43,6 +43,9 @@ namespace coup{
             throw std::invalid_argument("you cant undo this action");
         }
         if(p.getRole() == "Governor"){
+            if(p.coins()<=3){
+                throw std::invalid_argument("this player didnt have enough money");
+            }
             p.money -= 1; // tax og Governor is to take 3 coins and not only 2
         }
         p.money -= 2; // Undo the tax action by removing 3 coins
@@ -58,7 +61,6 @@ namespace coup{
         actions.push_back("arrest");
         actions.push_back("bribe");
         actions.push_back("coup");
-        actions.push_back("undo"); // Governor can undo the tax action
         return actions;
     }
 }

@@ -42,7 +42,7 @@ void Game::nextTurn(){
     do{
         currentTurn+=1;
         currentTurn%=playersList.size();
-    }while(!playersList[currentTurn]->isStillAlive());
+    }while(!playersList[currentTurn]->isStillAlive() || playersList[currentTurn]->needSkip());
     playersList[currentTurn]->yourTurn();
 }
 /**

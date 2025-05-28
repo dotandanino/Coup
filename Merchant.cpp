@@ -35,3 +35,6 @@ vector<string> Merchant::getAvailableActions() const {
     actions.push_back("coup");
     return actions;
 }
+bool Merchant::canBeArrested() const{
+    return(this->money>=2 && this->name != game.getLastArrested());
+}
