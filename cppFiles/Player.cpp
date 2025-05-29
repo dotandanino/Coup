@@ -52,6 +52,9 @@ namespace coup{
         if(!(game.myTurn(this))){
             throw std::invalid_argument("its not your turn");
         }
+        if(game.getPlayersList().size()<2){
+            throw std::invalid_argument("you cant gather if there is no other players in the game");
+        }
         if(underSanction){
             throw std::invalid_argument("you are under sanction");
         }
@@ -79,6 +82,9 @@ namespace coup{
      * @throw std::invalid_argument if the player have 10 coins or more
      */
     void Player::tax(){
+        if(game.getPlayersList().size()<2){
+            throw std::invalid_argument("you cant gather if there is no other players in the game");
+        }
         if(!(game.myTurn(this))){
             throw std::invalid_argument("its not your turn");
         }
@@ -105,10 +111,13 @@ namespace coup{
      * @brief this function is to coup another player
      * @param pl - the player to coup
      * @throw std::invalid_argument if this is not his turn
-     * @throw std::invalid_argument if the player is under sanction
-     * @throw std::invalid_argument if the player have 10 coins or more
+     * @throw std::invalid_argument if the player have less than 7 coins
+     * @throw std::invalid_argument if the player is already dead
      */
     void Player::coup(Player& pl){
+        if(game.getPlayersList().size()<2){
+            throw std::invalid_argument("you cant gather if there is no other players in the game");
+        }
         if(!(game.myTurn(this))){
             throw std::invalid_argument("its not your turn");
         }
@@ -147,6 +156,9 @@ namespace coup{
         if(!(game.myTurn(this))){
             throw std::invalid_argument("its not your turn");
         }
+        if(game.getPlayersList().size()<2){
+            throw std::invalid_argument("you cant gather if there is no other players in the game");
+        }
         if(this->money<4){
             throw std::invalid_argument("you dont have enough money to pay for the bribe");
         }
@@ -174,6 +186,9 @@ namespace coup{
     void Player::arrest(Player& pl){
         if(!(game.myTurn(this))){
             throw std::invalid_argument("its not your turn");
+        }
+        if(game.getPlayersList().size()<2){
+            throw std::invalid_argument("you cant gather if there is no other players in the game");
         }
         if(game.getLastArrested()==pl.getName()){
             throw std::invalid_argument("you cant arrest the same player twice in a row");
@@ -206,7 +221,7 @@ namespace coup{
      */
     bool Player::getArrested(){
         if(this->money<1){
-            throw std::invalid_argument("you dont have enough money to pay for the arrest");
+            throw std::invalid_argument("the other player dont have enough money to pay for the arrest");
         }
         this->money-=1;
         this->game.setLastArrested(this->getName());
@@ -248,8 +263,12 @@ namespace coup{
      * @param pl - the player to put under sanction
      */
     void Player::sanction(Player& pl){
+        
         if(!(game.myTurn(this))){
             throw std::invalid_argument("its not your turn");
+        }
+        if(game.getPlayersList().size()<2){
+            throw std::invalid_argument("you cant gather if there is no other players in the game");
         }
         if(!(pl.isAlive)){
             throw std::invalid_argument("you cant coup someone that already couped");
@@ -319,7 +338,7 @@ namespace coup{
      * @return false if the player dont need to skip his turn
      * @note the player need to skip his turn if he is under sanction and have less than 3 coins and cant arrest any other player
      */
-    bool Player::needSkip() const{
+    bool Player::needSkip(){
         if(!underSanction){
             return false;
         }
@@ -335,6 +354,8 @@ namespace coup{
                 }
             }
         }
+        canArrest=true;
+        underSanction=false;
         return true;
     }
     /**

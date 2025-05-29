@@ -22,6 +22,12 @@ string Spy::getRole() const{
  * @param pl The player to block from arresting
  */
 void Spy::BlockArresting(Player& pl){
+    if(game.getPlayersList().size()<2){
+        throw std::invalid_argument("you cant gather if there is no other players in the game");
+    }
+    if(!pl.isStillAlive()){
+        throw std::invalid_argument("you cant block arresting a dead player");
+    }
     pl.setCanArrest(false);
 }
 /**

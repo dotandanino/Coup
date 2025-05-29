@@ -29,6 +29,9 @@ void Baron::invest(){
     if(!(game.myTurn(this))){
         throw std::invalid_argument("its not your turn");
     }
+    if(game.getPlayersList().size()<2){
+        throw std::invalid_argument("you cant gather if there is no other players in the game");
+    }
     if(this->money>=10){
         throw std::invalid_argument("you have to coup because you have 10 coins or more");
     }

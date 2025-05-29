@@ -35,6 +35,9 @@ bool General::getArrested(){
  * @throw std::invalid_argument if the player doesn't have enough money
  */
 void General::undo(Player&p){
+    if(game.getPlayersList().size()<2){
+        throw std::invalid_argument("you cant gather if there is no other players in the game");
+    }
     if(game.getLastAction()!="coup"){
         throw std::invalid_argument("you can undo only coup and only at the same time its happen");
     }

@@ -31,6 +31,7 @@ namespace coup{
             /**
             * @brief return the name of the current player
             * @return the name of the current player
+            * @throw std::invalid_argument if there are no players in the game
             */
             string turn();
             

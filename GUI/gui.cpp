@@ -56,7 +56,7 @@ void showWelcomeScreen(sf::Font& font) {
  * @param font The font to use for the text.
  * @return The number of players chosen (between 2 and 6).
  */
-int choose_player_screen(sf::Font& font){
+int choose_player_screen(){
     sf::RenderWindow window(sf::VideoMode(512, 512), "Coup - Number of Players");
     sf::Texture imageTexture;
     if (!imageTexture.loadFromFile("GUI/playersNumber.jpg")) {
@@ -244,7 +244,7 @@ std::vector<std::string> get_player_names_screen(sf::Font& font, int numPlayers)
  */
 void startGame(const std::vector<std::string>& playerNames,Game & game,vector<Player*> & playersList) {
     std::srand(std::time(nullptr));//initilaize the random
-    std::vector<std::string> roles = {"Governor","Spy","Baron","General","Judge", "Merchant"};
+    std::vector<std::string> roles = {"Governor","Baron","General","Judge", "Merchant","Spy"};
     for(const std::string& name : playerNames) {
         int x=rand() % roles.size();
         std::string role = roles[x];
@@ -294,9 +294,10 @@ void showPlayerTurn(Game& game) {
 
 
     errorText.setPosition(posX, 0);
-    sf::Text Special("",font,24);
+    sf::Text Special("",font,40);
     float specialX = windowWidth - marginRight - Special.getLocalBounds().width;
-    Special.setPosition(specialX,700);
+    Special.setPosition(specialX,200);
+    Special.setFillColor(sf::Color(85,51,23));
 
     sf::Clock errorClock;
     string answer;
@@ -310,7 +311,7 @@ void showPlayerTurn(Game& game) {
         nameText.setString("Name: " + p->getName());
         roleText.setString("Role: " + p->getRole());
         coinsText.setString("Coins: " + std::to_string(p->coins()));
-
+        Special.setString("");
         actions = p->getAvailableActions();
         buttons.clear();
         buttonTexts.clear();
@@ -362,7 +363,7 @@ void showPlayerTurn(Game& game) {
         if (currentPlayer != lastPlayer) {
             lastPlayer = currentPlayer;
             specialX = windowWidth - marginRight - Special.getLocalBounds().width;
-            Special.setPosition(specialX,700);
+            Special.setPosition(specialX,200);
             updatePlayerView(currentPlayer);
         }
 
@@ -398,6 +399,7 @@ void showPlayerTurn(Game& game) {
                                 }
                             } else if (action == "gather") {
                                 currentPlayer->gather();
+                                updatePlayerView(currentPlayer);
                                 showCancel=false;
                                 selectingTarget=false;
                             } else if (action == "bribe") {
@@ -420,6 +422,7 @@ void showPlayerTurn(Game& game) {
                                         showCancel=false;
                                     }
                                 }
+                                updatePlayerView(currentPlayer);
                             } else if (action == "arrest" || action == "coup" || action=="sanction" || action=="undo" || action=="peek" || action=="blockArresting") {
                                 selectingTarget = true;
                                 selectedAction=action;
@@ -434,6 +437,7 @@ void showPlayerTurn(Game& game) {
                                 Baron* baron= dynamic_cast<Baron*>(currentPlayer);
                                 if (baron){
                                     baron->invest();
+                                    updatePlayerView(currentPlayer);
                                 } 
                             }
                             coinsText.setString("Coins: " + std::to_string(currentPlayer->coins()));
@@ -457,6 +461,7 @@ void showPlayerTurn(Game& game) {
                         try {
                             if (selectedAction == "arrest") {
                                 currentPlayer->arrest(*target);
+                                updatePlayerView(currentPlayer);
                             } else if (selectedAction == "coup") {
                                 currentPlayer->coup(*target);
                                 for(Player* p:game.getPlayersList()){
@@ -474,32 +479,35 @@ void showPlayerTurn(Game& game) {
                                         showCancel=false;
                                     }
                                 }
-
+                                updatePlayerView(currentPlayer);
                             } else if (selectedAction == "sanction") {
                                 currentPlayer->sanction(*target);
-                            }else if (selectedAction == "undo") {
-                                if (currentPlayer->getRole() == "Governor") {
-                                    Governor* governor = dynamic_cast<Governor*>(currentPlayer);
-                                    if (governor) governor->undo(*target);
-                                } else if (currentPlayer->getRole() == "Judge") {
-                                    Judge* judge = dynamic_cast<Judge*>(currentPlayer);
-                                    if (judge) judge->undo(*target);
-                                } else {
-                                    throw std::runtime_error("This role cannot perform undo.");
-                                }
+                                updatePlayerView(currentPlayer);
+                            // }else if (selectedAction == "undo") {
+                            //     if (currentPlayer->getRole() == "Governor") {
+                            //         Governor* governor = dynamic_cast<Governor*>(currentPlayer);
+                            //         if (governor) governor->undo(*target);
+                            //     } else if (currentPlayer->getRole() == "Judge") {
+                            //         Judge* judge = dynamic_cast<Judge*>(currentPlayer);
+                            //         if (judge) judge->undo(*target);
+                            //     } else {
+                            //         throw std::runtime_error("This role cannot perform undo.");
+                            //     }
+                            //i canceled the undo action because i undo live
                             }else if(selectedAction=="peek"){
                                 Spy* spy=dynamic_cast<Spy*>(currentPlayer);
                                 if (spy){
                                     int x = spy->peek(*target);
                                     Special.setString(target->getName()+" have "+std::to_string(x)+"coins");
                                     specialX = windowWidth - marginRight - Special.getLocalBounds().width;
-                                    Special.setPosition(specialX,700);
+                                    Special.setPosition(specialX,200);
                                 } 
                             }else if(selectedAction=="blockArresting"){
                                 Spy* spy=dynamic_cast<Spy*>(currentPlayer);
                                 if (spy){
                                     spy->BlockArresting(*target);
                                 }
+                                updatePlayerView(currentPlayer);
                             }
                             coinsText.setString("Coins: " + std::to_string(currentPlayer->coins()));
                             selectingTarget = false;
@@ -665,18 +673,33 @@ void showWinnerWindow(const std::string& winnerName) {
 
     sf::Text winText(winnerName, font, 80);
     winText.setFillColor(sf::Color(85,51,23));
-    winText.setPosition(370, 550);
+    winText.setPosition(370, 460);
 
+    sf::RectangleShape button(sf::Vector2f(150, 60));
+    button.setFillColor(sf::Color(85, 51, 23));
+    button.setPosition(300, 600);
+
+    sf::Text endText("end", font, 36);
+    endText.setFillColor(sf::Color(180,148,107));
+    endText.setPosition(305, 605);
     while (winWindow.isOpen()) {
         sf::Event event;
         while (winWindow.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 winWindow.close();
             }
+            if( event.type == sf::Event::MouseButtonPressed) {
+                sf::Vector2f mouse(sf::Mouse::getPosition(winWindow));
+                if (button.getGlobalBounds().contains(mouse)) {
+                    winWindow.close();
+                }
+            }
         }
 
         winWindow.clear(sf::Color::Black);
         winWindow.draw(imageSprite);
+        winWindow.draw(button);
+        winWindow.draw(endText);
         winWindow.draw(winText);
         winWindow.display();
     }
@@ -691,7 +714,7 @@ int main() {
         return 1;
     }
     showWelcomeScreen(font);
-    int playerAmount = choose_player_screen(font);
+    int playerAmount = choose_player_screen();
     std::vector<std::string> playerNames = get_player_names_screen(font, playerAmount);
     std::vector<Player*> playersList; // Vector to hold player pointers
     Game game{}; // Create a new game instance
@@ -699,5 +722,8 @@ int main() {
     // בדיקה והדפסה
     std::cout << "Players in the game:" << std::endl;
     showPlayerTurn(game); // Show the first player's turn as an example
+    for(Player* player : playersList) {
+        delete player; // Free the dynamically allocated players
+    }
     return 0;
 }

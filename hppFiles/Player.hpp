@@ -163,7 +163,7 @@ namespace coup{
          * @return false if the player dont need to skip his turn
          * @note the player need to skip his turn if he is under sanction and have less than 3 coins and cant arrest any other player
          */
-        bool needSkip() const;
+        bool needSkip();
         /**
          * @brief this function is to check if the player can be arrested
          * @return true if the player can be arrested

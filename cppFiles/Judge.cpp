@@ -23,6 +23,9 @@ string Judge::getRole() const{
  * @throw std::invalid_argument if the last action is not bribe
  */
 void Judge::undo(Player& player){
+    if(game.getPlayersList().size()<2){
+        throw std::invalid_argument("you cant gather if there is no other players in the game");
+    }
     if(player.getLastAction()!="bribe"){
         throw std::invalid_argument("you cant undo this action");
     }

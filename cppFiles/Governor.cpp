@@ -28,6 +28,9 @@ namespace coup{
         if(!(game.myTurn(this))){
             throw std::invalid_argument("its not your turn");
         }
+        if(game.getPlayersList().size()<2){
+            throw std::invalid_argument("you cant gather if there is no other players in the game");
+        }
         if(underSanction){
             throw std::invalid_argument("you are under sanction");
         }
@@ -56,6 +59,12 @@ namespace coup{
     void Governor::undo(Player& p){
         if(p.getLastAction()!="tax"){
             throw std::invalid_argument("you cant undo this action");
+        }
+        if(game.getPlayersList().size()<2){
+            throw std::invalid_argument("you cant gather if there is no other players in the game");
+        }
+        if(!p.isStillAlive()){
+            throw std::invalid_argument("you cant undo an action of a dead player");
         }
         if(p.getRole() == "Governor"){//governor recive 3 coins in tax and we need to reduce him extra coin
             if(p.coins()<=3){

@@ -19,7 +19,7 @@
 #include <SFML/Window.hpp>
 using namespace coup;
 void showWelcomeScreen(sf::Font& font);
-int choose_player_screen(sf::Font& font);
+int choose_player_screen();
 std::vector<std::string> get_player_names_screen(sf::Font& font, int playerAmount);
 void startGame(const std::vector<std::string>& playerNames,Game & game);
 void showPlayerTurn(Game& game);

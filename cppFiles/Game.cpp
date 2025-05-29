@@ -30,8 +30,12 @@ vector<string> Game::players(){
 /**
  * @brief return the name of the current player
  * @return the name of the current player
+ * @throw std::invalid_argument if there are no players in the game
  */
 string Game::turn(){
+    if(playersList.size()==0){
+        throw std::runtime_error("there is no players in the game");
+    }
     return(playersList[currentTurn%playersList.size()]->getName());
 }
 

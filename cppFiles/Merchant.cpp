@@ -24,7 +24,7 @@ string Merchant::getRole() const{
  */
 bool Merchant::getArrested(){
     if(this->money<2){
-            throw std::invalid_argument("you dont have enough money to pay for the arrest");
+            throw std::invalid_argument("the other player dont have enough money to pay for the arrest");
     }
     this->money-=2;
     this->game.setLastArrested(this->getName());
