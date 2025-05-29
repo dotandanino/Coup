@@ -1,12 +1,12 @@
 //dotandanino@gmail.com
-#include "Player.hpp"
-#include "Governor.hpp"
-#include "Spy.hpp"
-#include "Baron.hpp"
-#include "General.hpp"
-#include "Judge.hpp"
-#include "Merchant.hpp"
-#include "Game.hpp"
+#include "../hppFiles/Player.hpp"
+#include "../hppFiles/Governor.hpp"
+#include "../hppFiles/Spy.hpp"
+#include "../hppFiles/Baron.hpp"
+#include "../hppFiles/General.hpp"
+#include "../hppFiles/Judge.hpp"
+#include "../hppFiles/Merchant.hpp"
+#include "../hppFiles/Game.hpp"
 
 #include <exception>
 #include <iostream>

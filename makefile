@@ -3,11 +3,11 @@ CXX=clang++
 CXXFLAGS=-std=c++2a -g -Wall -Wextra
 TARGET=Demo
 GUI_TARGET=coup_gui
-GUI_SRCS=gui.cpp
-GUI_HEADERS=gui.hpp
+GUI_SRCS=GUI/gui.cpp
+GUI_HEADERS=GUI/gui.hpp
 GUI_OBJS=$(GUI_SRCS:.cpp=.o)
-SRCS=Baron.cpp Game.cpp General.cpp Governor.cpp Judge.cpp Merchant.cpp Player.cpp Spy.cpp playerFactory.cpp
-HEADERS=Baron.hpp Demo.hpp Game.hpp General.hpp Governor.hpp Judge.hpp Merchant.hpp Player.hpp Spy.hpp playerFactory.hpp
+SRCS=cppFiles/Baron.cpp cppFiles/Game.cpp cppFiles/General.cpp cppFiles/Governor.cpp cppFiles/Judge.cpp cppFiles/Merchant.cpp cppFiles/Player.cpp cppFiles/Spy.cpp cppFiles/playerFactory.cpp
+HEADERS=hppFiles/Baron.hpp hppFiles/Demo.hpp hppFiles/Game.hpp hppFiles/General.hpp hppFiles/Governor.hpp hppFiles/Judge.hpp hppFiles/Merchant.hpp hppFiles/Player.hpp hppFiles/Spy.hpp hppFiles/playerFactory.hpp
 OBJS=$(SRCS:.cpp=.o)
 
 # TEST_TARGET=test_run
@@ -35,10 +35,10 @@ valgrind: $(TARGET)
 # test: $(TEST_TARGET)
 # 	./$(TEST_TARGET)
 
-GUI: $(GUI_OBJS) $(OBJS)
+gui: $(GUI_OBJS) $(OBJS)
 	clang++ $(GUI_OBJS) $(OBJS) -o $(GUI_TARGET) -lsfml-graphics -lsfml-window -lsfml-system
 	./$(GUI_TARGET)
 clean:
-	rm -f $(TARGET) $(TEST_TARGET) *.o $(GUI_TARGET)
+	rm -f $(TARGET) $(TEST_TARGET) *.o $(GUI_TARGET) $(GUI_OBJS) Demo.o $(OBJS)
 
 .PHONY: all clean

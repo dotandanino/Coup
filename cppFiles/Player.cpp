@@ -1,20 +1,20 @@
 //dotandanino@gmail.com
-#include "Player.hpp"
-#include "Game.hpp"
-#include "Governor.hpp"
-#include "Spy.hpp"
-#include "Baron.hpp"
-#include "General.hpp"
-#include "Judge.hpp"
-#include "Merchant.hpp"
+#include "../hppFiles/Player.hpp"
+#include "../hppFiles/Game.hpp"
+#include "../hppFiles/Governor.hpp"
+#include "../hppFiles/Spy.hpp"
+#include "../hppFiles/Baron.hpp"
+#include "../hppFiles/General.hpp"
+#include "../hppFiles/Judge.hpp"
+#include "../hppFiles/Merchant.hpp"
 namespace coup{
     //in alll the functions we check if the player paid for the bribe and
     // if so we just cancel the bribe and not change the turn
     
     
     /**
-    @param g-the game of the player;
-    @param name - the name of the player
+    * @param g-the game of the player;
+    * @param name - the name of the player
     
     */
     Player::Player(Game& g,string name):name(name),game(g){
@@ -201,6 +201,7 @@ namespace coup{
     /**
      * @brief this function is to get arrested by another player the main reason for this function is for thw special case of the Merchant and the General
      * @param pl - the player that arrest you
+     * @return true if the arresting player need to recive coin
      * @throw std::invalid_argument if arrested player dont have enough money
      */
     bool Player::getArrested(){
@@ -221,8 +222,8 @@ namespace coup{
     }
     
     /**
-     * @brief this function is to get the role of the player
-     * @return the role of the player
+     * @brief this function is to get the last action of the player
+     * @return the last action of the player
      */
     string Player::getLastAction() const{
         return this->lastAction;
@@ -300,6 +301,9 @@ namespace coup{
     bool Player::isStillAlive() const{
         return(this->isAlive);
     }
+     /**
+     * @brief this function is to announce that the player is under sanction
+     */
     void Player::youAreUnderSanction(){
         this->underSanction=true;
     }
@@ -309,7 +313,12 @@ namespace coup{
     void Player::yourTurn(){
         //nothing to do here//;
     }
-
+    /**
+     * @brief this function is to check if the player need to skip his turn
+     * @return true if the player need to skip his turn
+     * @return false if the player dont need to skip his turn
+     * @note the player need to skip his turn if he is under sanction and have less than 3 coins and cant arrest any other player
+     */
     bool Player::needSkip() const{
         if(!underSanction){
             return false;
@@ -336,5 +345,18 @@ namespace coup{
      */
     bool Player::canBeArrested() const{
         return(this->money>=1 && this->name != game.getLastArrested());
+    }
+     /**
+     * @brief Get the available actions for the player in use for the GUI and no one contain undo because I undo on live.
+     */
+    vector<string> Player::getAvailableActions() const {
+        vector<string> actions;
+        actions.push_back("gather");
+        actions.push_back("tax");
+        actions.push_back("sanction");
+        actions.push_back("arrest");
+        actions.push_back("bribe");
+        actions.push_back("coup");
+        return actions;
     }
 }

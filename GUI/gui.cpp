@@ -13,7 +13,7 @@ void showWelcomeScreen(sf::Font& font) {
     
      // load the pictuures
     sf::Texture imageTexture;
-    if (!imageTexture.loadFromFile("welcome_background.png")) {
+    if (!imageTexture.loadFromFile("GUI/welcome_background.png")) {
         std::cerr << "Failed to load image coup_picture.png" << std::endl;
     }
     sf::Sprite imageSprite(imageTexture);
@@ -59,7 +59,7 @@ void showWelcomeScreen(sf::Font& font) {
 int choose_player_screen(sf::Font& font){
     sf::RenderWindow window(sf::VideoMode(512, 512), "Coup - Number of Players");
     sf::Texture imageTexture;
-    if (!imageTexture.loadFromFile("playersNumber.jpg")) {
+    if (!imageTexture.loadFromFile("GUI/playersNumber.jpg")) {
         std::cerr << "Failed to load image coup_picture.png" << std::endl;
     }
     sf::Sprite imageSprite(imageTexture);
@@ -140,13 +140,13 @@ std::vector<std::string> get_player_names_screen(sf::Font& font, int numPlayers)
     std::vector<std::string> playerNames;
     sf::RenderWindow window(sf::VideoMode(400, 400), "Enter Player Names");
     sf::Texture imageTexture;
-    if (!imageTexture.loadFromFile("names.jpg")) {
+    if (!imageTexture.loadFromFile("GUI/names.jpg")) {
         std::cerr << "Failed to load image coup_picture.png" << std::endl;
     }
     sf::Sprite imageSprite(imageTexture);
     imageSprite.setPosition(0, 0);
-    sf::Text title("", font, 40);
-    title.setPosition(50, 100);
+    sf::Text title("", font, 30);
+    title.setPosition(30, 100);
     title.setFillColor(sf::Color::White);
 
     sf::RectangleShape inputBox(sf::Vector2f(300, 60));
@@ -256,7 +256,7 @@ void startGame(const std::vector<std::string>& playerNames,Game & game,vector<Pl
 void showPlayerTurn(Game& game) {
     sf::RenderWindow window(sf::VideoMode(1024, 1024), "Player Turn");
     sf::Texture imageTexture;
-    if (!imageTexture.loadFromFile("players.jpeg")) {
+    if (!imageTexture.loadFromFile("GUI/players.jpeg")) {
         std::cerr << "Failed to load image coup_picture.png" << std::endl;
     }
     sf::Sprite imageSprite(imageTexture);
@@ -267,7 +267,7 @@ void showPlayerTurn(Game& game) {
     std::vector<sf::RectangleShape> targetButtons;
     std::vector<sf::Text> targetButtonTexts;
     sf::Font font;
-    if (!font.loadFromFile("arial.ttf")) {
+    if (!font.loadFromFile("GUI/PTSerif-Bold.ttf")) {
         std::cerr << "Could not load font\n";
         return;
     }
@@ -341,11 +341,11 @@ void showPlayerTurn(Game& game) {
 
         for (Player* p : targets) {
             sf::RectangleShape button(sf::Vector2f(200, 40));
-            button.setFillColor(sf::Color(100, 250, 100));
+            button.setFillColor(sf::Color(85, 51, 23));
             button.setPosition(x, y);
 
             sf::Text txt(p->getName(), font, 24);
-            txt.setFillColor(sf::Color::Black);
+            txt.setFillColor(sf::Color(180,148,107));
             txt.setPosition(x + 10, y + 5);
 
             targetButtons.push_back(button);
@@ -652,18 +652,18 @@ void showWinnerWindow(const std::string& winnerName) {
     sf::RenderWindow winWindow(sf::VideoMode(780, 780), "Winner!");    
      // load the pictuures
     sf::Texture imageTexture;
-    if (!imageTexture.loadFromFile("winner.jpeg")) {
+    if (!imageTexture.loadFromFile("GUI/winner.jpeg")) {
         std::cerr << "Failed to load image coup_picture.png" << std::endl;
     }
     sf::Sprite imageSprite(imageTexture);
     imageSprite.setPosition(0, 0);
     sf::Font font;
-    if (!font.loadFromFile("arial.ttf")) {
+    if (!font.loadFromFile("GUI/PTSerif-Bold.ttf")) {
         std::cerr << "Could not load font for winner window\n";
         return;
     }
 
-    sf::Text winText(winnerName, font, 68);
+    sf::Text winText(winnerName, font, 80);
     winText.setFillColor(sf::Color(85,51,23));
     winText.setPosition(370, 550);
 
@@ -686,7 +686,7 @@ void showWinnerWindow(const std::string& winnerName) {
 int main() {
     
     sf::Font font;
-    if (!font.loadFromFile("AmericanCaptain-MdEY.otf")) {
+    if (!font.loadFromFile("GUI/PTSerif-Bold.ttf")) {
         std::cerr << "Could not load font!" << std::endl;
         return 1;
     }

@@ -1,7 +1,7 @@
 //dotandanino@gmail.com
 
-#include "Game.hpp"
-#include "Player.hpp"
+#include "../hppFiles/Game.hpp"
+#include "../hppFiles/Player.hpp"
 using namespace coup;
 using std::string;
 /**
@@ -20,7 +20,7 @@ Game::Game(){
 vector<string> Game::players(){
     std::vector<string> names;
     for(size_t i=0;i<playersList.size();i++){
-        if(playersList[i]->isStillAlive()){
+        if(playersList[i]->isStillAlive()){//we want to return only the players that are still alive
             names.push_back(playersList[i]->getName());
         }
     }
@@ -36,7 +36,7 @@ string Game::turn(){
 }
 
 /**
- * @brief move to the next player that is still alive
+ * @brief move to the next player that is still alive and have an action to do
  */
 void Game::nextTurn(){
     do{
@@ -52,10 +52,10 @@ void Game::nextTurn(){
  * @throw std::runtime_error if there are already 6 players in the game
  */
 void Game::addPlayer(Player* p){
-    if (playersList.size()>=6){
+    if (playersList.size()>=6){// check if there are already 6 players in the game
         throw std::runtime_error("you cant add more players to the game");
     }
-    for(size_t i=0;i<playersList.size();i++){
+    for(size_t i=0;i<playersList.size();i++){//check this name is not already in use
         if(playersList[i]->getName()==p->getName()){
             throw std::invalid_argument("this name is already in use in this game.");
         }
@@ -63,7 +63,7 @@ void Game::addPlayer(Player* p){
     this->playersList.push_back(p);
 }
 /**
- * @brief check if its the players turn
+ * @brief check if its the players turn method in use for the player actions
  * @param p the player to check
  * @return true if its the players turn, false otherwise
  */
@@ -82,13 +82,13 @@ string Game::winner(){
     if(playersList.size()==0){
         throw std::invalid_argument("there is no players in the game");
     }
-    for(size_t i=0;i<playersList.size();i++){
+    for(size_t i=0;i<playersList.size();i++){//for to check how many players still alive
         if(playersList[i]->isStillAlive()){
             alivePlayers++;
             name=playersList[i]->getName();
         }
     }
-    if(alivePlayers==1){
+    if(alivePlayers==1){//if there is 1 player alive
         return name;
     }
     throw std::runtime_error("there is no winner yet");
@@ -108,18 +108,34 @@ string Game::getLastArrested() const{
     return this->lastArrested;
 }
 
+/**
+ * @brief return the current player
+ * @return the current player
+ */
 Player* Game::getCurrentPlayer(){
     return playersList[currentTurn];
 }
 
+/**
+ * @brief return the list of all the players in the game (including dead players)
+ * @return vector with the players in the game
+ */
 vector<Player*>& Game::getPlayersList() {
     return playersList;
 }
 
+/**
+ * @brief return the last action of the game
+ * @return the last action of the game
+ */
 string Game::getLastAction() const{
     return this->lastGameAction;
 }
 
+/**
+ * @brief set the last action of the game
+ * @param str the last action of the game
+ */
 void Game::setLastAction(string str){
     this->lastGameAction=str;
 }

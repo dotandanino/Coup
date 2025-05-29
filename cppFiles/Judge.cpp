@@ -1,6 +1,6 @@
 //dotandanino@gmail.com
-#include "Judge.hpp"
-#include "Game.hpp"
+#include "../hppFiles/Judge.hpp"
+#include "../hppFiles/Game.hpp"
 using namespace coup;
 /**
  * @brief Judge constructor
@@ -28,13 +28,3 @@ void Judge::undo(Player& player){
     }
     player.undoBribe();
 }
-vector<string> Judge::getAvailableActions() const {
-        vector<string> actions;
-        actions.push_back("gather");
-        actions.push_back("tax");
-        actions.push_back("sanction");
-        actions.push_back("arrest");
-        actions.push_back("bribe");
-        actions.push_back("coup");
-        return actions;
-    }
