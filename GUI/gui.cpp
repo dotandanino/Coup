@@ -407,7 +407,7 @@ void showPlayerTurn(Game& game) {
                                 showCancel=true;
                                 selectingTarget=false;
                                 for(Player* p:game.getPlayersList()){
-                                    if(p->getRole()=="Judge" && p->isStillAlive()){
+                                    if(p->getRole()=="Judge" && p->isStillAlive() && p->getName()!= currentPlayer->getName()){
                                         showCancel=true;
                                         answer=showCancelConfirmation(window,font,p->getName());
                                         std::cout<<answer<<std::endl;
