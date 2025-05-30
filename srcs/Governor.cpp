@@ -1,6 +1,6 @@
 //dotandanino@gmail.com
-#include "../hppFiles/Governor.hpp"
-#include "../hppFiles/Game.hpp"
+#include "../include/Governor.hpp"
+#include "../include/Game.hpp"
 //using namespace coup;
 namespace coup{
     /**

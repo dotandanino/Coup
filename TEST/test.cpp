@@ -1,15 +1,15 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 
 #include "doctest.h"
-#include "../hppFiles/Game.hpp"
-#include "../hppFiles/Player.hpp"
-#include "../hppFiles/Governor.hpp"
-#include "../hppFiles/Spy.hpp"
-#include "../hppFiles/Baron.hpp"
-#include "../hppFiles/General.hpp"
-#include "../hppFiles/Judge.hpp"
-#include "../hppFiles/Merchant.hpp"
-#include "../hppFiles/playerFactory.hpp"
+#include "../include/Game.hpp"
+#include "../include/Player.hpp"
+#include "../include/Governor.hpp"
+#include "../include/Spy.hpp"
+#include "../include/Baron.hpp"
+#include "../include/General.hpp"
+#include "../include/Judge.hpp"
+#include "../include/Merchant.hpp"
+#include "../include/playerFactory.hpp"
 #include <iostream>
 #include <vector>
 

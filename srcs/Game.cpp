@@ -1,7 +1,7 @@
 //dotandanino@gmail.com
 
-#include "../hppFiles/Game.hpp"
-#include "../hppFiles/Player.hpp"
+#include "../include/Game.hpp"
+#include "../include/Player.hpp"
 using namespace coup;
 using std::string;
 /**

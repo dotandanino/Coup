@@ -1,4 +1,4 @@
-#include "../hppFiles/playerFactory.hpp"
+#include "../include/playerFactory.hpp"
 /**
  * @brief this function creates a player according to the role and adds it to the playersList in use for the GUI.
  */

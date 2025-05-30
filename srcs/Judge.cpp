@@ -1,6 +1,6 @@
 //dotandanino@gmail.com
-#include "../hppFiles/Judge.hpp"
-#include "../hppFiles/Game.hpp"
+#include "../include/Judge.hpp"
+#include "../include/Game.hpp"
 using namespace coup;
 /**
  * @brief Judge constructor

@@ -1,6 +1,6 @@
 //dotandanino@gmail.com
-#include "../hppFiles/Spy.hpp"
-#include "../hppFiles/Game.hpp"
+#include "../include/Spy.hpp"
+#include "../include/Game.hpp"
 using namespace coup;
 /**
  * @brief Constructor for the Spy class

@@ -1,15 +1,15 @@
 #ifndef GUI_HPP
 #define GUI_HPP
 
-#include "../hppFiles/Player.hpp"
-#include "../hppFiles/Governor.hpp"
-#include "../hppFiles/Spy.hpp"
-#include "../hppFiles/Baron.hpp"
-#include "../hppFiles/General.hpp"
-#include "../hppFiles/Judge.hpp"
-#include "../hppFiles/Merchant.hpp"
-#include "../hppFiles/Game.hpp"
-#include "../hppFiles/playerFactory.hpp"
+#include "../include/Player.hpp"
+#include "../include/Governor.hpp"
+#include "../include/Spy.hpp"
+#include "../include/Baron.hpp"
+#include "../include/General.hpp"
+#include "../include/Judge.hpp"
+#include "../include/Merchant.hpp"
+#include "../include/Game.hpp"
+#include "../include/playerFactory.hpp"
 #include <sstream>
 #include <exception>
 #include <iostream>

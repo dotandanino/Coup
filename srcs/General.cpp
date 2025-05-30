@@ -1,6 +1,6 @@
 //dotandanino@gmail.com
-#include "../hppFiles/General.hpp"
-#include "../hppFiles/Game.hpp"
+#include "../include/General.hpp"
+#include "../include/Game.hpp"
 using namespace coup;
 using namespace std;
 /**

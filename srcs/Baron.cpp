@@ -1,6 +1,6 @@
 //dotandanino@gmail.com
-#include "../hppFiles/Baron.hpp"
-#include "../hppFiles/Game.hpp"
+#include "../include/Baron.hpp"
+#include "../include/Game.hpp"
 using namespace coup;
 using std::vector;
 using std::string;

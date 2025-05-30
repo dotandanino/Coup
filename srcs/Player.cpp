@@ -1,12 +1,12 @@
 //dotandanino@gmail.com
-#include "../hppFiles/Player.hpp"
-#include "../hppFiles/Game.hpp"
-#include "../hppFiles/Governor.hpp"
-#include "../hppFiles/Spy.hpp"
-#include "../hppFiles/Baron.hpp"
-#include "../hppFiles/General.hpp"
-#include "../hppFiles/Judge.hpp"
-#include "../hppFiles/Merchant.hpp"
+#include "../include/Player.hpp"
+#include "../include/Game.hpp"
+#include "../include/Governor.hpp"
+#include "../include/Spy.hpp"
+#include "../include/Baron.hpp"
+#include "../include/General.hpp"
+#include "../include/Judge.hpp"
+#include "../include/Merchant.hpp"
 namespace coup{
     //in alll the functions we check if the player paid for the bribe and
     // if so we just cancel the bribe and not change the turn
